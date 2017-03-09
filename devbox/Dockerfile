@@ -1,0 +1,119 @@
+FROM debian:stretch
+
+MAINTAINER Paul Kirth
+
+
+ENV DEBIAN_FRONTEND noninteractive
+
+#RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+#RUN echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | tee /etc/apt/sources.list.d/docker.list
+#RUN apt-get install apt-transport-https ca-certificates -y
+#RUN apt-get install docker-engine -y
+
+
+# add ppas
+# apt-fast
+#RUN add-apt-repository ppa:apt-fast/stable
+#RUN apt-get update
+#RUN apt-get -y install apt-fast
+
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 40976EAF437D05B5
+# RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+
+# add neovim repo
+#RUN add-apt-repository -y ppa:neovim-ppa/unstable
+
+#get and install packages
+RUN apt-get update
+RUN apt-get install -y apt-utils
+RUN apt-get -y install software-properties-common
+RUN apt-get install -y build-essential
+RUN apt-get install -y sudo
+RUN apt-get install -y lsb
+RUN apt-get install -y vim
+RUN apt-get install -y neovim
+RUN apt-get install -y zsh
+RUN apt-get install -y git
+RUN apt-get install -y gcc
+RUN apt-get install -y g++
+RUN apt-get install -y bison
+RUN apt-get install -y flex
+RUN apt-get install -y wget
+RUN apt-get install -y curl
+RUN apt-get install -y python-pip
+RUN apt-get install -y byobu
+RUN apt-get install -y tmux
+RUN apt-get install -y autotools-dev
+RUN apt-get install -y autoconf
+RUN apt-get install -y ninja-build
+RUN apt-get install -y python3
+RUN apt-get install -y python3-dev
+RUN apt-get install -y python3-pip
+RUN apt-get install -y exuberant-ctags
+RUN apt-get install -y ruby
+RUN apt-get install -y rake
+RUN apt-get install -y npm
+RUN apt-get install -y ack-grep
+RUN apt-get install -y silversearcher-ag
+RUN apt-get install -y apt-transport-https
+RUN apt-get install -y cmake
+RUN apt-get install -y docker
+RUN apt-get install -y libgmp-dev
+RUN apt-get install -y libmpc-dev
+RUN apt-get install -y libmpfr-dev
+RUN apt-get install -y nasm
+RUN apt-get install -y texinfo
+RUN apt-get install -y openssl
+RUN apt-get install -y libssl-dev
+RUN apt-get install -y libxml2-dev
+RUN apt-get install -y stow
+RUN apt-get install -y libpcre3-dev
+RUN apt-get install -y clang
+RUN apt-get install -y clang-format
+RUN apt-get install -y clang-tidy
+# RUN apt-get install -y linux-headers-$(uname -r)
+RUN apt-get install -y openssh-server
+RUN apt-get install -y emacs
+RUN apt-get install -y keychain
+
+
+## Set the locale
+#RUN locale-gen en_US.UTF-8
+#ENV LANG en_US.UTF-8
+#ENV LANGUAGE en_US:en
+#ENV LC_ALL en_US.UTF-8
+
+
+## Add the damon user, with passwordless sudo
+RUN useradd --user-group \
+            --create-home \
+            --shell /usr/bin/zsh \
+            paul && \
+            echo 'paul ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+#switch to paul user and /home/paul directory
+USER paul
+ENV HOME /home/paul
+WORKDIR /home/paul
+
+#ENV SSH_ASKPASS=
+
+#ADD id_rsa $HOME/.ssh/id_rsa
+
+
+#RUN eval `ssh-agent -s`
+#RUN ssh-add /home/paul/id_rsa
+#$HOME/.ssh/id_rsa
+
+RUN git clone https://github.com/tarjoilija/zgen.git
+RUN git clone https://github.com/unixorn/zsh-quickstart-kit.git
+RUN cd zsh-quickstart-kit/ && stow --target=$HOME zsh && cd ..
+
+RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
+
+# install spf13 vim
+#RUN sh <(curl https://j.mp/spf13-vim3 -L)
+
+# Run zsh as login shell
+ENTRYPOINT ["/usr/bin/zsh"]
+CMD ["--login"]
