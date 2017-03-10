@@ -4,13 +4,6 @@ MAINTAINER Paul Kirth
 
 
 ENV DEBIAN_FRONTEND noninteractive
-
-#RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-#RUN echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | tee /etc/apt/sources.list.d/docker.list
-#RUN apt-get install apt-transport-https ca-certificates -y
-#RUN apt-get install docker-engine -y
-
-
 # add ppas
 # apt-fast
 #RUN add-apt-repository ppa:apt-fast/stable
@@ -53,6 +46,7 @@ RUN apt-get install -y exuberant-ctags
 RUN apt-get install -y ruby
 RUN apt-get install -y rake
 RUN apt-get install -y npm
+RUN apt-get install -y nodejs
 RUN apt-get install -y ack-grep
 RUN apt-get install -y silversearcher-ag
 RUN apt-get install -y apt-transport-https
@@ -95,15 +89,6 @@ RUN useradd --user-group \
 USER paul
 ENV HOME /home/paul
 WORKDIR /home/paul
-
-#ENV SSH_ASKPASS=
-
-#ADD id_rsa $HOME/.ssh/id_rsa
-
-
-#RUN eval `ssh-agent -s`
-#RUN ssh-add /home/paul/id_rsa
-#$HOME/.ssh/id_rsa
 
 RUN git clone https://github.com/tarjoilija/zgen.git
 RUN git clone https://github.com/unixorn/zsh-quickstart-kit.git
