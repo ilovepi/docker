@@ -94,7 +94,7 @@ RUN git clone https://github.com/tarjoilija/zgen.git
 RUN git clone https://github.com/unixorn/zsh-quickstart-kit.git
 RUN cd zsh-quickstart-kit/ && stow --target=$HOME zsh && cd ..
 
-RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
+RUN git clone git@github.com:/ilovepi/spacemacs.git $HOME/.emacs.d
 
 # install spf13 vim
 #RUN sh <(curl https://j.mp/spf13-vim3 -L)
