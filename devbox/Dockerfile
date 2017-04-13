@@ -90,11 +90,12 @@ USER paul
 ENV HOME /home/paul
 WORKDIR /home/paul
 
-RUN git clone https://github.com/tarjoilija/zgen.git
-RUN git clone https://github.com/unixorn/zsh-quickstart-kit.git
-RUN cd zsh-quickstart-kit/ && stow --target=$HOME zsh && cd ..
+RUN mkdir .zsh
+RUN curl -sL zplug.sh/installer | zsh
+RUN git clone https://github.com/ilovepi/spacemacs $HOME/.emacs.d
+RUN git clone https://github.com/ilovepi/dotfiles.git
+RUN ln -s dotfiles/.zshrc $HOME
 
-RUN git clone git@github.com:/ilovepi/spacemacs.git $HOME/.emacs.d
 
 # install spf13 vim
 #RUN sh <(curl https://j.mp/spf13-vim3 -L)
