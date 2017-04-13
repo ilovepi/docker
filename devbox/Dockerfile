@@ -2,7 +2,6 @@ FROM debian:stretch
 
 MAINTAINER Paul Kirth
 
-
 ENV DEBIAN_FRONTEND noninteractive
 # add ppas
 # apt-fast
@@ -68,6 +67,7 @@ RUN apt-get install -y clang-tidy
 # RUN apt-get install -y linux-headers-$(uname -r)
 RUN apt-get install -y openssh-server
 RUN apt-get install -y emacs
+RUN apt-get install -y man
 RUN apt-get install -y keychain
 
 
