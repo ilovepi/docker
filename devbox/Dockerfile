@@ -44,8 +44,9 @@ RUN apt-get install -y python3-pip
 RUN apt-get install -y exuberant-ctags
 RUN apt-get install -y ruby
 RUN apt-get install -y rake
-RUN apt-get install -y npm
+#RUN apt-get install -y npm
 RUN apt-get install -y nodejs
+RUN apt-get install -y nodejs-legacy
 RUN apt-get install -y ack-grep
 RUN apt-get install -y silversearcher-ag
 RUN apt-get install -y apt-transport-https
@@ -69,13 +70,15 @@ RUN apt-get install -y openssh-server
 RUN apt-get install -y emacs
 RUN apt-get install -y man
 RUN apt-get install -y keychain
-
+RUN apt-get install -y locales
+RUN apt-get install -y locales-all
 
 ## Set the locale
-#RUN locale-gen en_US.UTF-8
-#ENV LANG en_US.UTF-8
-#ENV LANGUAGE en_US:en
-#ENV LC_ALL en_US.UTF-8
+RUN locale-gen "en_US.UTF-8"
+ENV LANG "en_US.UTF-8"
+ENV LANGUAGE "en_US:en"
+ENV LC_ALL "en_US.UTF-8"
+RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 
 ## Add the damon user, with passwordless sudo
@@ -89,6 +92,8 @@ RUN useradd --user-group \
 USER paul
 ENV HOME /home/paul
 WORKDIR /home/paul
+
+
 
 RUN mkdir .zsh
 RUN curl -sL zplug.sh/installer | zsh
