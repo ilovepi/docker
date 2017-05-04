@@ -72,6 +72,7 @@ RUN apt-get install -y man
 RUN apt-get install -y keychain
 RUN apt-get install -y locales
 RUN apt-get install -y locales-all
+RUN apt-get install -y vim-gtk
 
 ## Set the locale
 RUN locale-gen "en_US.UTF-8"
