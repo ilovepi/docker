@@ -99,11 +99,13 @@ WORKDIR /home/paul
 
 RUN mkdir .zsh
 RUN curl -sL zplug.sh/installer | zsh
-RUN git clone https://github.com/ilovepi/spacemacs $HOME/.emacs.d
+RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN git clone https://github.com/ilovepi/dotfiles.git
-RUN ln -s dotfiles/.zshrc $HOME
-RUN ln -s dotfiles/.spacemacs $HOME
 
+WORKDIR /home/paul/dotfiles
+RUN stow --target=$HOME zsh git vim spacemacs
+
+WORKDIR /home/paul
 
 # install spf13 vim
 #RUN sh <(curl https://j.mp/spf13-vim3 -L)
