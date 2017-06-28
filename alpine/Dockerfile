@@ -33,6 +33,7 @@ RUN apk add  ruby-rake
 RUN apk add  nodejs
 RUN apk add  grep
 RUN apk add  ack
+RUN apk add  the_silver_searcher
 RUN apk add  cmake
 RUN apk add  docker
 RUN apk add  gmp
@@ -73,6 +74,7 @@ RUN echo 'paul ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 #switch to paul user and /home/paul directory
 USER paul
 ENV HOME /home/paul
+ENV USER paul
 WORKDIR /home/paul
 
 #ENV SSH_ASKPASS=
@@ -92,8 +94,11 @@ RUN mkdir .zsh
 RUN curl -sL zplug.sh/installer | zsh
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN git clone https://github.com/ilovepi/dotfiles.git
-RUN ln -s dotfiles/.zshrc $HOME
 
+WORKDIR /home/paul/dotfiles
+RUN stow --target=$HOME zsh git vim spacemacs
+
+WORKDIR /home/paul
 # install spf13 vim
 #RUN sh <(curl https://j.mp/spf13-vim3 -L)
 
