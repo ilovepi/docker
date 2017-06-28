@@ -92,6 +92,7 @@ RUN useradd --user-group \
 #switch to paul user and /home/paul directory
 USER paul
 ENV HOME /home/paul
+ENV USER paul
 WORKDIR /home/paul
 
 
@@ -101,6 +102,7 @@ RUN curl -sL zplug.sh/installer | zsh
 RUN git clone https://github.com/ilovepi/spacemacs $HOME/.emacs.d
 RUN git clone https://github.com/ilovepi/dotfiles.git
 RUN ln -s dotfiles/.zshrc $HOME
+RUN ln -s dotfiles/.spacemacs $HOME
 
 
 # install spf13 vim
