@@ -60,6 +60,8 @@ RUN apt-get update &&               \
        locales                      \
        locales-all                  \
        vim-gtk                      \
+    && apt-get autoremove
+
 
 ## Set the locale
 RUN locale-gen "en_US.UTF-8"
