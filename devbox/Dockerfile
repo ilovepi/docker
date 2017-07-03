@@ -11,22 +11,25 @@ RUN apt-get update &&               \
        build-essential              \
        sudo                         \
        lsb                          \
-       vim                          \
+       vim-gtk                      \
        neovim                       \
        zsh                          \
        git                          \
+       git-extras                   \
+       git-flow                     \
        gcc                          \
        g++                          \
+       golang-go                    \
        bison                        \
        flex                         \
        wget                         \
        curl                         \
-       python-pip                   \
        byobu                        \
        tmux                         \
        autotools-dev                \
        autoconf                     \
        ninja-build                  \
+       python-pip                   \
        python3                      \
        python3-dev                  \
        python3-pip                  \
@@ -59,7 +62,7 @@ RUN apt-get update &&               \
        keychain                     \
        locales                      \
        locales-all                  \
-       vim-gtk                      \
+       locate                       \
     && apt-get autoremove
 
 
@@ -85,18 +88,26 @@ ENV USER paul
 WORKDIR /home/paul
 
 
+RUN echo hello
 RUN mkdir .zsh
 RUN curl -sL zplug.sh/installer | zsh
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
-RUN git clone https://github.com/ilovepi/dotfiles.git
+RUN git clone --recursive https://github.com/ilovepi/dotfiles.git
+
+RUN mkdir -p .config/
 
 WORKDIR /home/paul/dotfiles
-RUN stow --target=$HOME zsh git vim spacemacs
+RUN stow --target=$HOME zsh git vim spacemacs tmux byobu
+RUN git remote set-url origin git@github.com:/ilovepi/dotfiles.git
+RUN ln -s ~/.vim/ ~/.config/nvim
+RUN ln -s ~/.vimrc ~/.config/nvim/init.vim
 
 WORKDIR /home/paul
 
 # install spf13 vim
-RUN sh <(curl https://j.mp/spf13-vim3 -L)
+RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
+
+RUN sudo updatedb
 
 # Run zsh as login shell
 ENTRYPOINT ["/usr/bin/zsh"]
