@@ -63,7 +63,7 @@ RUN apt-get update &&               \
        locales                      \
        locales-all                  \
        locate                       \
-    && apt-get autoremove
+    && apt-get autoremove && apt-get clean
 
 
 ## Set the locale
@@ -88,24 +88,21 @@ ENV USER paul
 WORKDIR /home/paul
 
 
-RUN echo hello
-RUN mkdir .zsh
+RUN mkdir -p .zsh .config
 RUN curl -sL zplug.sh/installer | zsh
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN git clone --recursive https://github.com/ilovepi/dotfiles.git
 
-RUN mkdir -p .config/
-
 WORKDIR /home/paul/dotfiles
 RUN stow --target=$HOME zsh git vim spacemacs tmux byobu
 RUN git remote set-url origin git@github.com:/ilovepi/dotfiles.git
-RUN ln -s ~/.vim/ ~/.config/nvim
-RUN ln -s ~/.vimrc ~/.config/nvim/init.vim
 
 WORKDIR /home/paul
 
 # install spf13 vim
 RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
+RUN ln -s ~/.vim/ ~/.config/nvim
+RUN ln -s ~/.vimrc ~/.config/nvim/init.vim
 
 RUN sudo updatedb
 
