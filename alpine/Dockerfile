@@ -3,60 +3,63 @@ FROM alpine:latest
 MAINTAINER Paul Kirth
 
 
-ENV DEBIAN_FRONTEND noninteractive
+#ENV DEBIAN_FRONTEND noninteractive
 
 #get and install packages
-RUN apk add --update &&  apk add  vim musl-dev \
-		 libtool                               \
-		 alpine-sdk                            \
-         build-base                            \
-		 ncurses                               \
-         ncurses-dev                           \
-         ncurses-libs                          \
-         ncurses-terminfo                      \
-		 neovim                                \
-		 zsh                                   \
-		 git                                   \
-		 gcc                                   \
-		 g++                                   \
-		 bison                                 \
-		 flex                                  \
-		 wget                                  \
-		 curl                                  \
-		 py-pip                                \
-		 byobu                                 \
-		 tmux                                  \
-		 automake                              \
-         autoconf                              \
-		 autoconf                              \
-		 ninja                                 \
-		 python3                               \
-		 ctags                                 \
-		 ruby                                  \
-		 ruby-rake                             \
-		 nodejs                                \
-		 grep                                  \
-		 ack                                   \
-		 the_silver_searcher                   \
-		 cmake                                 \
-		 docker                                \
-		 gmp                                   \
-		 mpc                                   \
-		 nasm                                  \
-		 texinfo                               \
-		 openssl                               \
-		 stow                                  \
-		 clang                                 \
-		 openssh                               \
-		 emacs                                 \
-		 util-linux                            \
-		 pciutils                              \
-		 usbutils                              \
-		 coreutils                             \
-		 binutils                              \
-		 findutils                             \
-		 man                                   \
-		 man-pages                             
+RUN apk add --update &&     \
+    apk add                 \
+        ack                 \
+        alpine-sdk          \
+        autoconf            \
+        autoconf            \
+        automake            \
+        binutils            \
+        bison               \
+        build-base          \
+        byobu               \
+        clang               \
+        cmake               \
+        coreutils           \
+        ctags               \
+        curl                \
+        docker              \
+        emacs               \
+        findutils           \
+        flex                \
+        g++                 \
+        gcc                 \
+        git                 \
+        gmp                 \
+        grep                \
+        libtool             \
+        man                 \
+        man-pages           \
+        mpc                 \
+        musl-dev            \
+        nasm                \
+        ncurses             \
+        ncurses-dev         \
+        ncurses-libs        \
+        ncurses-terminfo    \
+        neovim              \
+        ninja               \
+        nodejs              \
+        openssh             \
+        openssl             \
+        pciutils            \
+        py-pip              \
+        python3             \
+        ruby                \
+        ruby-rake           \
+        stow                \
+        texinfo             \
+        the_silver_searcher \
+        tmux                \
+        usbutils            \
+        util-linux          \
+        vim                 \
+        wget                \
+        zsh
 
 ## Set the locale
 #RUN locale-gen en_US.UTF-8
@@ -88,7 +91,7 @@ RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN git clone --recursive https://github.com/ilovepi/dotfiles.git
 
 WORKDIR /home/paul/dotfiles
-RUN stow --target=$HOME zsh git vim spacemacs tmux byobu
+#RUN stow --target=$HOME zsh git vim spacemacs tmux byobu
 RUN git remote set-url origin git@github.com:/ilovepi/dotfiles.git
 
 WORKDIR /home/paul
