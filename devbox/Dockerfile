@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:unstable
 
 MAINTAINER Paul Kirth
 
@@ -10,7 +10,6 @@ RUN apt-get update &&               \
        software-properties-common   \
        build-essential              \
        sudo                         \
-       lsb                          \
        vim-gtk                      \
        neovim                       \
        zsh                          \
@@ -37,7 +36,6 @@ RUN apt-get update &&               \
        ruby                         \
        rake                         \
        nodejs                       \
-       nodejs-legacy                \
        ack-grep                     \
        silversearcher-ag            \
        apt-transport-https          \
@@ -64,6 +62,8 @@ RUN apt-get update &&               \
        locales-all                  \
        locate                       \
     && apt-get autoremove && apt-get clean
+       #lsb                          \
+       #nodejs-legacy                \
 
 
 ## Set the locale
@@ -89,7 +89,7 @@ WORKDIR /home/paul
 
 
 RUN mkdir -p .zsh .config
-RUN curl -sL zplug.sh/installer | zsh
+RUN curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN git clone --recursive https://github.com/ilovepi/dotfiles.git
 
