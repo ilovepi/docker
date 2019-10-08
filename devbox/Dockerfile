@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 #get and install packages
 RUN apt-get update &&               \
+       apt-get upgrade -y &&        \
        apt-get install -y apt-utils \
        software-properties-common   \
        build-essential              \
@@ -37,7 +38,6 @@ RUN apt-get update &&               \
        rake                         \
        nodejs                       \
        ack-grep                     \
-       silversearcher-ag            \
        apt-transport-https          \
        cmake                        \
        docker                       \
@@ -52,8 +52,12 @@ RUN apt-get update &&               \
        stow                         \
        libpcre3-dev                 \
        clang                        \
+       clangd                       \
        clang-format                 \
        clang-tidy                   \
+       lld                          \
+       llvm                         \
+       llvm-dev                     \
        openssh-server               \
        emacs                        \
        man                          \
@@ -61,7 +65,10 @@ RUN apt-get update &&               \
        locales                      \
        locales-all                  \
        locate                       \
-    && apt-get autoremove && apt-get clean
+       fd-find                      \
+       ripgrep                      \
+       bat                          \
+    && apt-get autoremove -y && apt-get clean
        #lsb                          \
        #nodejs-legacy                \
 
@@ -88,21 +95,25 @@ ENV USER paul
 WORKDIR /home/paul
 
 
-RUN mkdir -p .zsh .config
-RUN curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+RUN mkdir -p $HOME/.config
+#RUN curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zplugin/master/doc/install.sh)"
 RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
-RUN git clone --recursive https://github.com/ilovepi/dotfiles.git
+RUN git clone -b experiment --recursive https://github.com/ilovepi/dotfiles.git
 
 WORKDIR /home/paul/dotfiles
+RUN mv $HOME/.zshrc $HOME/.zshrc.bak
 RUN stow --target=$HOME zsh git vim spacemacs tmux byobu
+RUN stow --target=$HOME/.config config
 RUN git remote set-url origin git@github.com:/ilovepi/dotfiles.git
 
 WORKDIR /home/paul
 
-# install spf13 vim
-RUN curl https://j.mp/spf13-vim3 -L > spf13-vim.sh && sh spf13-vim.sh
-RUN ln -s ~/.vim/ ~/.config/nvim
-RUN ln -s ~/.vimrc ~/.config/nvim/init.vim
+# setup neovim
+RUN curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh && sh installer.sh $HOME/.nvim/dein
+
+#install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly -y
 
 RUN sudo updatedb
 
