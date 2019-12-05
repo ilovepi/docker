@@ -5,70 +5,73 @@ MAINTAINER Paul Kirth
 ENV DEBIAN_FRONTEND noninteractive
 
 #get and install packages
-RUN apt-get update &&               \
-       apt-get upgrade -y &&        \
-       apt-get install -y apt-utils \
-       software-properties-common   \
-       build-essential              \
-       sudo                         \
-       vim-gtk                      \
-       neovim                       \
-       zsh                          \
-       git                          \
-       git-extras                   \
-       git-flow                     \
-       gcc                          \
-       g++                          \
-       golang-go                    \
-       bison                        \
-       flex                         \
-       wget                         \
-       curl                         \
-       byobu                        \
-       tmux                         \
-       autotools-dev                \
-       autoconf                     \
-       ninja-build                  \
-       python-pip                   \
-       python3                      \
-       python3-dev                  \
-       python3-pip                  \
-       exuberant-ctags              \
-       ruby                         \
-       rake                         \
-       nodejs                       \
-       ack-grep                     \
-       apt-transport-https          \
-       cmake                        \
-       docker                       \
-       libgmp-dev                   \
-       libmpc-dev                   \
-       libmpfr-dev                  \
-       nasm                         \
-       texinfo                      \
-       openssl                      \
-       libssl-dev                   \
-       libxml2-dev                  \
-       stow                         \
-       libpcre3-dev                 \
-       clang                        \
-       clangd                       \
-       clang-format                 \
-       clang-tidy                   \
-       lld                          \
-       llvm                         \
-       llvm-dev                     \
-       openssh-server               \
-       emacs                        \
-       man                          \
-       keychain                     \
-       locales                      \
-       locales-all                  \
-       locate                       \
-       fd-find                      \
-       ripgrep                      \
-       bat                          \
-    && apt-get autoremove -y && apt-get clean
+RUN apt-get update &&                \
+        apt-get upgrade -y &&        \
+        apt-get install -y apt-utils \
+        software-properties-common   \
+        build-essential              \
+        sudo                         \
+        vim-gtk                      \
+        neovim                       \
+        zsh                          \
+        git                          \
+        git-extras                   \
+        git-flow                     \
+        gcc                          \
+        g++                          \
+        golang-go                    \
+        bison                        \
+        flex                         \
+        wget                         \
+        curl                         \
+        libcurl4-openssl-dev         \
+        byobu                        \
+        tmux                         \
+        autotools-dev                \
+        autoconf                     \
+        ninja-build                  \
+        python-pip                   \
+        python3                      \
+        python3-dev                  \
+        python3-pip                  \
+        exuberant-ctags              \
+        ruby                         \
+        rake                         \
+        nodejs                       \
+        ack-grep                     \
+        apt-transport-https          \
+        cmake                        \
+        docker                       \
+        libgmp-dev                   \
+        libmpc-dev                   \
+        libmpfr-dev                  \
+        nasm                         \
+        texinfo                      \
+        openssl                      \
+        libssl-dev                   \
+        libxml2-dev                  \
+        stow                         \
+        libpcre3-dev                 \
+        clang                        \
+        clangd                       \
+        clang-format                 \
+        clang-tidy                   \
+        lld                          \
+        llvm                         \
+        llvm-dev                     \
+        openssh-server               \
+        emacs                        \
+        man                          \
+        keychain                     \
+        locales                      \
+        locales-all                  \
+        locate                       \
+        fd-find                      \
+        ripgrep                      \
+        bat                          \
+        && apt-get autoremove -y     \
+        && apt-get clean             \
+        && rm -rf /var/lib/apt/lists/*
        #lsb                          \
        #nodejs-legacy                \
 
@@ -83,16 +86,16 @@ RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 ## Add the paul user, with passwordless sudo
 RUN useradd --user-group \
-            --create-home \
-            --shell /usr/bin/zsh \
-            paul && \
-            echo 'paul ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+        --create-home \
+        --shell /usr/bin/zsh \
+        paul && \
+        echo 'paul ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 #switch to paul user and /home/paul directory
 USER paul
 ENV HOME /home/paul
-ENV USER paul
 WORKDIR /home/paul
+ENV USER paul
 
 
 RUN mkdir -p $HOME/.config
@@ -114,6 +117,7 @@ RUN curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.
 
 #install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly -y
+RUN nvim --headless +DeinInstall +qall
 
 RUN sudo updatedb
 
