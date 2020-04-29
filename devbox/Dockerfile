@@ -30,7 +30,6 @@ RUN apt-get update &&                \
         autotools-dev                \
         autoconf                     \
         ninja-build                  \
-        python-pip                   \
         python3                      \
         python3-dev                  \
         python3-pip                  \
@@ -85,7 +84,7 @@ RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 
 
 ## Add the paul user, with passwordless sudo
-RUN useradd --user-group \
+RUN useradd -u 1005 --user-group \
         --create-home \
         --shell /usr/bin/zsh \
         paul && \
@@ -106,14 +105,13 @@ RUN git clone -b experiment --recursive https://github.com/ilovepi/dotfiles.git
 
 WORKDIR /home/paul/dotfiles
 RUN mv $HOME/.zshrc $HOME/.zshrc.bak
-RUN stow --target=$HOME zsh git vim spacemacs tmux byobu
-RUN stow --target=$HOME/.config config
+RUN stow --target=$HOME zsh git vim spacemacs tmux byobu config
 RUN git remote set-url origin git@github.com:/ilovepi/dotfiles.git
 
 WORKDIR /home/paul
 
 # setup neovim
-RUN curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh && sh installer.sh $HOME/.nvim/dein
+RUN curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh && sh installer.sh $HOME/.cache/dein
 
 #install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly -y
