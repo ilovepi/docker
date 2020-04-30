@@ -1,12 +1,11 @@
 # syntax=docker/dockerfile:experimental
 
-FROM paul/dev-box:latest
+FROM paul/devbase:latest
 
 MAINTAINER Paul Kirth
 
 RUN sudo apt update                   \
          && sudo apt install -y       \
-                 bat                  \
                  build-essential      \
                  ccache               \
                  g++                  \
@@ -20,6 +19,7 @@ RUN sudo apt update                   \
                  libxml2              \
                  libxml2-dev          \
                  python3              \
+                 python3-dev          \
                  python3-pip          \
                  sqlite3              \
                  swig                 \
@@ -39,14 +39,13 @@ RUN wget -nc https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.
                     &&  sudo ./b2 -j2 -d0 install --cflags="-fPIC" --cxxflags="-fPIC" --prefix=/usr/ \
                     && rm -rf boost_1_70_0.tar.gz boost_1_70_0
 
-#RUN mkdir -p $HOME/.ssh && ssh-keyscan github.com >> $HOME/.ssh/known_hosts
-#USER root
-#RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
-#RUN --mount=type=ssh git clone git@github.com:securesystemslab/rust-priv.git rust
-#RUN --mount=type=ssh git clone https://github.com/ilovepi/sea-dsa.git rust/src/llvm-project/llvm/projects/
-#WORKDIR $HOME/workspace/rust
-#COPY config.toml .
-#RUN python3 x.py build -i
+RUN mkdir -p $HOME/.ssh && ssh-keyscan github.com >> $HOME/.ssh/known_hosts
+RUN --mount=type=ssh git clone -b untruted_june_2019 --recursive git@github.com:securesystemslab/rust-priv.git rust
+RUN --mount=type=ssh git clone https://github.com/ilovepi/sea-dsa.git rust/src/llvm-project/llvm/projects/
+RUN --mount=type=ssh git clone git@github.com:securesystemslab/servo -b develop
+WORKDIR $HOME/workspace/rust
+COPY config.toml .
+RUN python x.py build -i
 
 
 WORKDIR $HOME/workspace
