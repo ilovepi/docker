@@ -1,0 +1,32 @@
+diff --git a/Cargo.toml b/Cargo.toml
+index abab0c9..f68999a 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -49,3 +49,11 @@ libc = "0.2"
+ log = "0.4"
+ num-traits = "0.2"
+ mozjs_sys = "0.61.0"
++
++[patch.crates-io]
++mozjs_sys = { path = "../mozjs" }
++
++
++mpk = { git = "ssh://git@github.com:/secursystemslab/mpk-libc" }
++mpk_protector = { git = "ssh://git@github.com:/secursystemslab/mpk-protector" , branch = "rust2018"}
++pkmallocator = { git = "ssh://git@github.com:/secursystemslab/pkmallocator", branch = "no-cpp" }
+diff --git a/src/lib.rs b/src/lib.rs
+index 9d6b010..045fcfd 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -7,6 +7,11 @@
+ 
+ #![allow(non_upper_case_globals, non_camel_case_types, non_snake_case, improper_ctypes)]
+ 
++#![feature(plugin, custom_attribute)]
++#![feature(maros_in_extern)]
++#![plugin(mpk_protector)]
++#![mpk_protector]
++
+ #[macro_use]
+ extern crate lazy_static;
+ extern crate libc;

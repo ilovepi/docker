@@ -27,9 +27,20 @@ RUN python3 x.py build -i
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain nightly -y
 RUN $HOME/.cargo/bin/rustup toolchain link mpk2 /root/rust/build/x86_64-unknown-linux-gnu/stage2
 
-WORKDIR $HOME/workspace
+WORKDIR $HOME
 
+RUN git clone -b 4131b2ed git@github.com:servo/mozjs
+RUN git clone -b 59a69a0c git@github.com:servo/rust-mozjs
 
+WORKDIR $HOME/rust-mozjs
+COPY rust-mozjs.patch .
+RUN git apply rust-mozjs.patch
+
+WORKDIR $HOME/servo
+COPY servo-mpk.patch .
+RUN git apply servo-mpk.patch
+
+WORKDIR $HOME
 
 #RUN mkdir build && cd build && cmake .. -DCMAKE_C_COMPILER=$HOME/clang/bin/clang -DCMAKE_CXX_COMPILER=$HOME/clang/bin/clang++ -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DPHASAR_BUILD_UNITTESTS=ON -GNinja
 #WORKDIR $HOME/workspace/phasar/build
