@@ -29,9 +29,10 @@ RUN $HOME/.cargo/bin/rustup toolchain link mpk2 /root/rust/build/x86_64-unknown-
 
 WORKDIR $HOME
 
-RUN git clone -b 4131b2ed git@github.com:servo/mozjs
-RUN git clone -b 59a69a0c git@github.com:servo/rust-mozjs
+RUN git clone https://github.com/servo/mozjs && cd mozjs && git checkout 4a31b2ed
+WORKDIR $HOME
 
+RUN git clone https://github.com/servo/rust-mozjs && cd rust-mozjs && git checkout 59a69a0c
 WORKDIR $HOME/rust-mozjs
 COPY rust-mozjs.patch .
 RUN git apply rust-mozjs.patch
