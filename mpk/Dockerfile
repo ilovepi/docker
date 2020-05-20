@@ -18,6 +18,8 @@ RUN sudo apt update                   \
                  libsqlite3-dev       \
                  libxml2              \
                  libxml2-dev          \
+                 python               \
+                 python-dev           \
                  python3              \
                  python3-dev          \
                  python3-pip          \

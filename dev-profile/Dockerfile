@@ -1,21 +1,28 @@
-FROM devbase:latest
+FROM paul/devbase:latest
 
 MAINTAINER Paul Kirth
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ARG UNAME=paul
+ARG UID=1000
+ARG GID=1000
+
 ## Add the paul user, with passwordless sudo
-RUN useradd -u 1005 --user-group \
-        --create-home \
-        --shell /usr/bin/zsh \
-        paul && \
-        echo 'paul ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -u $UID \
+            -g $GID \
+            --create-home \
+            --shell /usr/bin/zsh \
+            $UNAME && \
+            echo "$UNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 #switch to paul user and /home/paul directory
-USER paul
-ENV HOME /home/paul
-WORKDIR /home/paul
-ENV USER paul
+USER $UNAME
+ENV HOME /home/$UNAME
+WORKDIR /home/$UNAME
+ENV USER $UNAME
 
 
 RUN mkdir -p $HOME/.config
@@ -25,12 +32,14 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/d
 #RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
 RUN git clone -b experiment --recursive https://github.com/ilovepi/dotfiles.git
 
-WORKDIR /home/paul/dotfiles
+WORKDIR $HOME/dotfiles
 RUN mv $HOME/.zshrc $HOME/.zshrc.bak
 RUN stow --target=$HOME zsh git vim spacemacs tmux byobu config
 RUN git remote set-url origin git@github.com:/ilovepi/dotfiles.git
 
-WORKDIR /home/paul
+WORKDIR $HOME
+
+RUN pip3 install neovim --user
 
 # setup neovim
 RUN curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh && sh installer.sh $HOME/.cache/dein
