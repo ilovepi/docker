@@ -1,0 +1,27 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 9acd6ba1ea..0212eb2b09 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -5570,6 +5570,10 @@ dependencies = [
+  "time 0.1.42 (registry+https://github.com/rust-lang/crates.io-index)",
+ ]
+ 
++[[patch.unused]]
++name = "mozjs"
++version = "0.9.2"
++
+ [metadata]
+ "checksum adler32 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "7e522997b529f05601e05166c07ed17789691f562762c7f3b987263d2dedee5c"
+ "checksum aho-corasick 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)" = "e6f484ae0c99fec2e858eb6134949117399f222608d84cadb3f58c1f97c2364c"
+diff --git a/Cargo.toml b/Cargo.toml
+index 060be41a5d..a6a95b142b 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -15,6 +15,7 @@ opt-level = 3
+ # lto = false
+ 
+ [patch.crates-io]
++mozjs = { path = '../rust-mozjs' }
+ # If you need to temporarily test Servo with a local fork of some upstream
+ # crate, add that here. Use the form:
+ #

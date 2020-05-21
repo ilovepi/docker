@@ -4,31 +4,58 @@ FROM paul/devbase:latest
 
 MAINTAINER Paul Kirth
 
-RUN sudo apt update                   \
-         && sudo apt install -y       \
-                 build-essential      \
-                 ccache               \
-                 g++                  \
-                 graphviz             \
-                 libc++-dev           \
-                 libcurl4-openssl-dev \
-                 libedit-dev          \
-                 libncurses5-dev      \
-                 libncursesw5-dev     \
-                 libsqlite3-dev       \
-                 libxml2              \
-                 libxml2-dev          \
-                 python               \
-                 python-dev           \
-                 python3              \
-                 python3-dev          \
-                 python3-pip          \
-                 sqlite3              \
-                 swig                 \
-                 z3                   \
-                 zlib1g               \
-                 zlib1g-dev           \
-        && sudo apt-get autoremove -y \
+RUN sudo apt update                               \
+         && sudo apt install -y                   \
+                 autoconf                         \
+                 autoconf2.13                     \
+                 build-essential                  \
+                 ccache                           \
+                 clang                            \
+                 cmake                            \
+                 curl                             \
+                 g++                              \
+                 git                              \
+                 gperf                            \
+                 graphviz                         \
+                 libbz2-dev                       \
+                 libc++-dev                       \
+                 libcurl4-openssl-dev             \
+                 libdbus-1-dev                    \
+                 libedit-dev                      \
+                 libegl1-mesa-dev                 \
+                 libfreetype6-dev                 \
+                 libgl1-mesa-dri                  \
+                 libgles2-mesa-dev                \
+                 libglib2.0-dev                   \
+                 libglu1-mesa-dev                 \
+                 libgstreamer-plugins-bad1.0-dev  \
+                 libgstreamer-plugins-base1.0-dev \
+                 libgstreamer1.0-dev              \
+                 libharfbuzz-dev                  \
+                 liblzma-dev                      \
+                 libncurses5-dev                  \
+                 libncursesw5-dev                 \
+                 libosmesa6-dev                   \
+                 libsqlite3-dev                   \
+                 libssl-dev                       \
+                 libunwind-dev                    \
+                 libx11-dev                       \
+                 libxml2                          \
+                 libxml2-dev                      \
+                 libxmu-dev                       \
+                 libxmu6                          \
+                 python-pip                       \
+                 python3                          \
+                 python3-dev                      \
+                 python3-pip                      \
+                 sqlite3                          \
+                 swig                             \
+                 virtualenv                       \
+                 xorg-dev                         \
+                 z3                               \
+                 zlib1g                           \
+                 zlib1g-dev                       \
+        && sudo apt-get autoremove -y             \
         && sudo apt-get clean
 
 RUN mkdir $HOME/workspace
@@ -42,9 +69,9 @@ RUN wget -nc https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.
                     && rm -rf boost_1_70_0.tar.gz boost_1_70_0
 
 RUN mkdir -p $HOME/.ssh && ssh-keyscan github.com >> $HOME/.ssh/known_hosts
-RUN --mount=type=ssh git clone -b untruted_june_2019 --recursive git@github.com:securesystemslab/rust-priv.git rust
+RUN --mount=type=ssh git clone -b june_2019 --recursive git@github.com:securesystemslab/rust-priv.git rust
 RUN --mount=type=ssh git clone https://github.com/ilovepi/sea-dsa.git rust/src/llvm-project/llvm/projects/
-RUN --mount=type=ssh git clone git@github.com:securesystemslab/servo -b develop
+RUN --mount=type=ssh git clone git@github.com:securesystemslab/servo -b june_2019
 WORKDIR $HOME/workspace/rust
 COPY config.toml .
 RUN python x.py build -i
