@@ -24,7 +24,7 @@ RUN mkdir -p $HOME/.config
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
 
 #RUN git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
-RUN --mount=type=ssh git clone -b experiment --recursive git@github.com:ilovepi/dotfiles.git
+RUN --mount=type=ssh git clone -b docker --recursive git@github.com:ilovepi/dotfiles.git
 
 RUN mv $HOME/.zshrc $HOME/.zshrc.bak
 WORKDIR $HOME/dotfiles
